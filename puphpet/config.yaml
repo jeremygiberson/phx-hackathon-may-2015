@@ -191,6 +191,8 @@ php:
             - cli
             - intl
             - mcrypt
+            - memcached
+            - memcache
         pear: {  }
         pecl:
             - pecl_http

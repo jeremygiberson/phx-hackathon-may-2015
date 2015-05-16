@@ -9,6 +9,9 @@
 
 namespace Application;
 
+use Application\Service\CollectionDays\Delegator\CollectionDaysEventDelegator;
+use Application\Service\CollectionDays\Listeners\GetCollectionDaysPostListener;
+use Application\Service\CollectionDays\Listeners\GetCollectionDaysPreListener;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -19,6 +22,14 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        $locator = $e->getApplication()->getServiceManager();
+        $em = $locator->get('ApiEventManager');
+        $pre_listener = $locator->get(GetCollectionDaysPreListener::class);
+        $post_listener = $locator->get(GetcollectionDaysPostListener::class);
+
+        $em->attach(CollectionDaysEventDelegator::EVENT_PRE, $pre_listener);
+        $em->attach(CollectionDaysEventDelegator::EVENT_POST, $post_listener);
     }
 
     public function getConfig()

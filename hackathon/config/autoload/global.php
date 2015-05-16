@@ -41,5 +41,6 @@ return array(
             'route-name' => 'refuse-bot',
             'callable' => ApiController::class . '::refuseBotAction'
         ]
-    ]
+    ],
+
 );

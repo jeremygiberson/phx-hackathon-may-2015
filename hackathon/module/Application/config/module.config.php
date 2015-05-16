@@ -11,10 +11,16 @@ use Application\Controller\ApiController;
 use Application\Controller\Factory\ApiControllerFactory;
 use Application\Controller\IndexController;
 use Application\Service\CollectionDays\CollectionDaysInterface;
+use Application\Service\CollectionDays\Delegator\CollectionDaysEventDelegatorFactory;
+use Application\Service\CollectionDays\Listeners\Factory\GetCollectionDaysPostListenerFactory;
+use Application\Service\CollectionDays\Listeners\Factory\GetCollectionDaysPreListenerFactory;
+use Application\Service\CollectionDays\Listeners\GetCollectionDaysPostListener;
+use Application\Service\CollectionDays\Listeners\GetCollectionDaysPreListener;
 use Application\Service\CollectionDays\PhxGovCollectionDays;
-use Application\Service\RemindMe\DbAdapterRemindMe;
 use Application\Service\RemindMe\Factory\DbAdapterRemindMeFactory;
 use Application\Service\RemindMe\RemindMeInterface;
+use Zend\Cache\Service\StorageCacheAbstractServiceFactory;
+use Zend\Mvc\Service\EventManagerFactory;
 
 return array(
     'router' => array(
@@ -73,17 +79,27 @@ return array(
     'service_manager' => array(
         'invokables' => [
             CollectionDaysInterface::class => PhxGovCollectionDays::class,
+            CollectionDaysEventDelegatorFactory::class => CollectionDaysEventDelegatorFactory::class,
         ],
         'factories' => [
             RemindMeInterface::class => DbAdapterRemindMeFactory::class,
+            GetCollectionDaysPreListener::class => GetCollectionDaysPreListenerFactory::class,
+            GetCollectionDaysPostListener::class => GetCollectionDaysPostListenerFactory::class,
+            'ApiEventManager' => EventManagerFactory::class,
         ],
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
+            StorageCacheAbstractServiceFactory::class,
         ),
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
+        'delegators' => [
+            CollectionDaysInterface::class => [
+                CollectionDaysEventDelegatorFactory::class
+            ]
+        ]
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -130,4 +146,16 @@ return array(
             ),
         ),
     ),
+
+    'caches' => [
+        'cache' => [
+            'adapter' => [
+                'name'    => 'apc',
+                'options' => ['ttl' => 3600],
+            ],
+            'plugins' => [
+                'exception_handler' => ['throw_exceptions' => false],
+            ],
+        ]
+    ]
 );
