@@ -151,7 +151,7 @@ apache:
     vhosts:
         av_xdcc73k9tbpj:
             servername: hackathon.local
-            docroot: /var/www/hackathon
+            docroot: /var/www/hackathon/public
             port: '80'
             setenv:
                 - 'APP_ENV dev'
@@ -165,7 +165,7 @@ apache:
             ssl_cipher: ''
             directories:
                 avd_c8jvd1u0t8pi:
-                    path: /var/www/awesome
+                    path: /var/www/hackathon
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -325,7 +325,7 @@ mailcatcher:
         mailcatcher_path: /usr/local/rvm/wrappers/default
         from_email_method: inline
 beanstalkd:
-    install: '1'
+    install: '0'
     settings:
         listenaddress: 0.0.0.0
         listenport: '13000'
