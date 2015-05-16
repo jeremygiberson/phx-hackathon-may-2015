@@ -44,7 +44,11 @@ class DbAdapterRemindMe implements RemindMeInterface, AdapterAwareInterface
      */
     public function unsubscribe($address, $email)
     {
-        // TODO: Implement unsubscribe() method.
+        $subscription = new TableGateway('subscription', $this->adapter);
+        $subscription->delete([
+            'address' => $address,
+            'email' => $email
+        ]);
     }
 
     /**

@@ -12,6 +12,8 @@ use Application\Controller\Factory\ApiControllerFactory;
 use Application\Controller\IndexController;
 use Application\Service\CollectionDays\CollectionDaysInterface;
 use Application\Service\CollectionDays\PhxGovCollectionDays;
+use Application\Service\RemindMe\DbAdapterRemindMe;
+use Application\Service\RemindMe\RemindMeInterface;
 
 return array(
     'router' => array(
@@ -42,7 +44,7 @@ return array(
                     'route'    => '/remind-me',
                     'defaults' => array(
                         'controller' => 'RemindMe',
-                        'address' => null
+                        'action' => 'remindMe'
                     ),
                 ),
             ),
@@ -59,7 +61,8 @@ return array(
     ),
     'service_manager' => array(
         'invokables' => [
-            CollectionDaysInterface::class => PhxGovCollectionDays::class
+            CollectionDaysInterface::class => PhxGovCollectionDays::class,
+            RemindMeInterface::class => DbAdapterRemindMe::class,
         ],
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -87,6 +90,7 @@ return array(
         'factories' => array(
             ApiController::class => ApiControllerFactory::class,
             'CollectionDays' => ApiControllerFactory::class,
+            'RemindMe' => ApiControllerFactory::class,
         ),
     ),
     'view_manager' => array(
