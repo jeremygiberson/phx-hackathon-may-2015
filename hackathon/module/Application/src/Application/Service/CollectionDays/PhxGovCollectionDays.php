@@ -5,6 +5,7 @@ namespace Application\Service\CollectionDays;
 
 
 use GuzzleHttp\Client;
+use RuntimeException;
 use ZF\ApiProblem\ApiProblem;
 
 class PhxGovCollectionDays implements CollectionDaysInterface
@@ -42,14 +43,13 @@ class PhxGovCollectionDays implements CollectionDaysInterface
 
         if(!$response->getStatusCode() === 200)
         {
-            return new ApiProblem('503', 'city of phoenix service not available',
-                null, null, $response->getReasonPhrase());
+            throw new RuntimeException('City of phoenix service not available', 503);
         }
 
         $body = $response->getBody()->getContents();
         $json = json_decode($body, true);
         if(!isset($json['pw_collections'])){
-            return new ApiProblem(400, 'Sorry that address is not serviced by Phoenix waste collection');
+            throw new RuntimeException('Sorry that address is not serviced by Phoenix waste collection');
         }
 
         $days = [];

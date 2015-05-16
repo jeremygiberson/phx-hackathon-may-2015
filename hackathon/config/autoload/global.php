@@ -32,10 +32,15 @@ return array(
             'http_methods' => ['GET'],
             'route-name' => 'remind-me',
         ],
+        'UnsubscribeRemindMe' => [
+            'http_methods' => ['GET'],
+            'route-name' => 'unsubscribe-remind-me',
+        ],
         'RefuseBot' => [
             'http_methods' => ['GET'],
             'route-name' => 'refuse-bot',
             'callable' => ApiController::class . '::refuseBotAction'
         ]
-    ]
+    ],
+
 );

@@ -84,32 +84,72 @@ class ApiController extends AbstractActionController
         $address = $this->getRequest()->getQuery('address',null);
         if(!$address) {
             // todo handle with content validation
-            return new ApiProblemResponse(ApiProblem(400, 'Address must be provided'));
+            return new ApiProblemResponse(new ApiProblem(400, 'Address must be provided'));
         }
 
         $email = $this->getRequest()->getQuery('email',null);
         if(!$email) {
             // todo handle with content validation
-            return new ApiProblemResponse(ApiProblem(400, 'Email must be provided'));
+            return new ApiProblemResponse(new ApiProblem(400, 'Email must be provided'));
         }
 
-        $collectionDays = $this->getCollectionDaysService()->getCollectionDays($address);
-        if($collectionDays instanceof ApiProblem){
-            return new ApiProblemResponse($collectionDays);
+        try {
+            $collectionDays = $this->getCollectionDaysService()->getCollectionDays($address);
+        } catch (\Exception $e) {
+            return new ApiProblemResponse(new ApiProblem(400, $e->getMessage()));
         }
 
+        try {
+            $this->getRemindMeService()->subscribe($email, $address, $collectionDays);
+        } catch (\Exception $e) {
+            return new ApiProblemResponse(new ApiProblem(400, $e->getMessage()));
+        }
 
-
-        return new JsonModel([
+        $response =[
             'message' => 'You have signed up for reminders.',
             'email' => $email,
             'address' => $address,
-            'reminders' => [
-                ['day' => 'Monday', 'container' => 'Compost'],
-                ['day' => 'Tuesday', 'container' => 'Recycling'],
-                ['day' => 'Wednesday', 'container' => 'Garbage']
-            ]
-        ]);
+            'reminders' => []
+        ];
+
+        foreach($collectionDays as $collectionDay)
+        {
+            $response['reminders'][] = [
+                'day' => $collectionDay->getDay(),
+                'container' => $collectionDay->getService()
+            ];
+        }
+
+        return new JsonModel($response);
+    }
+
+    public function unsubscribeRemindMeAction()
+    {
+        $address = $this->getRequest()->getQuery('address',null);
+        if(!$address) {
+            // todo handle with content validation
+            return new ApiProblemResponse(new ApiProblem(400, 'Address must be provided'));
+        }
+
+        $email = $this->getRequest()->getQuery('email',null);
+        if(!$email) {
+            // todo handle with content validation
+            return new ApiProblemResponse(new ApiProblem(400, 'Email must be provided'));
+        }
+
+        try {
+            $this->getRemindMeService()->unsubscribe($email, $address);
+        } catch (\Exception $e) {
+            return new ApiProblemResponse(new ApiProblem(400, $e->getMessage()));
+        }
+
+        $response =[
+            'message' => 'You have unsubscribed from reminders.',
+            'email' => $email,
+            'address' => $address
+        ];
+
+        return new JsonModel($response);
     }
 
     public function refuseBotAction()
