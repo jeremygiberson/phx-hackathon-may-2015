@@ -8,7 +8,10 @@
  */
 
 use Application\Controller\ApiController;
+use Application\Controller\Factory\ApiControllerFactory;
 use Application\Controller\IndexController;
+use Application\Service\CollectionDays\CollectionDaysInterface;
+use Application\Service\CollectionDays\PhxGovCollectionDays;
 
 return array(
     'router' => array(
@@ -28,7 +31,8 @@ return array(
                 'options' => array(
                     'route'    => '/collection-days',
                     'defaults' => array(
-                        'controller' => 'CollectionDays'
+                        'controller' => 'CollectionDays',
+                        'action' => 'collectionDays'
                     ),
                 ),
             ),
@@ -37,7 +41,8 @@ return array(
                 'options' => array(
                     'route'    => '/remind-me',
                     'defaults' => array(
-                        'controller' => 'RemindMe'
+                        'controller' => 'RemindMe',
+                        'address' => null
                     ),
                 ),
             ),
@@ -53,6 +58,9 @@ return array(
         ),
     ),
     'service_manager' => array(
+        'invokables' => [
+            CollectionDaysInterface::class => PhxGovCollectionDays::class
+        ],
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
@@ -75,6 +83,10 @@ return array(
         'invokables' => array(
             IndexController::class => IndexController::class,
             ApiController::class => ApiController::class
+        ),
+        'factories' => array(
+            ApiController::class => ApiControllerFactory::class,
+            'CollectionDays' => ApiControllerFactory::class,
         ),
     ),
     'view_manager' => array(
