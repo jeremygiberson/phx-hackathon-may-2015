@@ -11,6 +11,31 @@
  * file.
  */
 
+use Application\Controller\ApiController;
+use Zend\View\Model\JsonModel;
+
 return array(
-    // ...
+    'zf-rpc' => [
+        'Api' => [
+            'http_methods' => ['GET'],
+            'callable' => function($e) {
+                return new JsonModel(['hello' => 'world']);
+            }
+        ],
+        'CollectionDays' => [
+            'http_methods' => ['GET'],
+            'route-name' => 'collection-days',
+            'callable' => ApiController::class . '::collectionDaysAction'
+        ],
+        'RemindMe' => [
+            'http_methods' => ['GET'],
+            'route-name' => 'remind-me',
+            'callable' => ApiController::class . '::remindMeAction'
+        ],
+        'RefuseBot' => [
+            'http_methods' => ['GET'],
+            'route-name' => 'refuse-bot',
+            'callable' => ApiController::class . '::refuseBotAction'
+        ]
+    ]
 );
