@@ -16,9 +16,9 @@ interface RemindMeInterface
     public function subscribe($email, $address, $days);
 
     /**
-     * @param string $address
      * @param string $email
+     * @param string $address
      */
-    public function unsubscribe($address, $email);
+    public function unsubscribe($email, $address);
 
 }

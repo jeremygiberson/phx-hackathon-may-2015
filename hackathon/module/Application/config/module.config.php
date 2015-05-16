@@ -13,6 +13,7 @@ use Application\Controller\IndexController;
 use Application\Service\CollectionDays\CollectionDaysInterface;
 use Application\Service\CollectionDays\PhxGovCollectionDays;
 use Application\Service\RemindMe\DbAdapterRemindMe;
+use Application\Service\RemindMe\Factory\DbAdapterRemindMeFactory;
 use Application\Service\RemindMe\RemindMeInterface;
 
 return array(
@@ -48,6 +49,16 @@ return array(
                     ),
                 ),
             ),
+            'unsubscribe-remind-me' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/unsubscribe-remind-me',
+                    'defaults' => array(
+                        'controller' => 'UnsubscribeRemindMe',
+                        'action' => 'unsubscribeRemindMe'
+                    ),
+                ),
+            ),
             'refuse-bot' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -62,7 +73,9 @@ return array(
     'service_manager' => array(
         'invokables' => [
             CollectionDaysInterface::class => PhxGovCollectionDays::class,
-            RemindMeInterface::class => DbAdapterRemindMe::class,
+        ],
+        'factories' => [
+            RemindMeInterface::class => DbAdapterRemindMeFactory::class,
         ],
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -91,6 +104,7 @@ return array(
             ApiController::class => ApiControllerFactory::class,
             'CollectionDays' => ApiControllerFactory::class,
             'RemindMe' => ApiControllerFactory::class,
+            'UnsubscribeRemindMe' => ApiControllerFactory::class,
         ),
     ),
     'view_manager' => array(
