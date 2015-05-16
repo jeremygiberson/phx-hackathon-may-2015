@@ -143,6 +143,15 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+                'send-reminders' => [
+                    'options' => [
+                        'route' => 'notify <day>',
+                        'defaults' => [
+                            'controller' => ApiController::class,
+                            'action' => 'sendNotifications'
+                        ]
+                    ]
+                ]
             ),
         ),
     ),

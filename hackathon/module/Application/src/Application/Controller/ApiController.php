@@ -152,6 +152,11 @@ class ApiController extends AbstractActionController
         return new JsonModel($response);
     }
 
+    public function sendNotificationsAction()
+    {
+        echo 'womp womp';
+    }
+
     public function refuseBotAction()
     {
         return new JsonModel([
@@ -162,4 +167,6 @@ class ApiController extends AbstractActionController
             ]
         ]);
     }
+
+
 }
