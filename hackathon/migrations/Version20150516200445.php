@@ -10,7 +10,6 @@ use Zend\Db\Sql\Ddl\Constraint\PrimaryKey;
 use Zend\Db\Sql\Ddl\Constraint\UniqueKey;
 use Zend\Db\Sql\Ddl\CreateTable;
 use Zend\Db\Sql\Ddl\DropTable;
-use Zend\Db\Sql\Ddl\Index\Index;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfSimpleMigrations\Library\AbstractMigration;
@@ -41,8 +40,9 @@ class Version20150516200445 extends AbstractMigration implements ServiceLocatorA
         $reminder->addColumn(new Varchar('day', 10));
         $reminder->addColumn(new Varchar('service', 10));
         $reminder->addConstraint(new PrimaryKey('reminder_id'));
-        $reminder->addConstraint(new ForeignKey('subscription_fk',
+        $reminder->addConstraint($fk = new ForeignKey('subscription_fk',
             'subscription_id', 'subscription', 'subscription_id'));
+        $fk->setOnDeleteRule('CASCADE');
         //$reminder->addConstraint(new Index(['day']));
         //$reminder->addConstraint(new Index(['subscription_id']));
 
