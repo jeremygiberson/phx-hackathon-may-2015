@@ -12,9 +12,17 @@
  */
 
 use Application\Controller\ApiController;
-use Zend\View\Model\JsonModel;
 
 return array(
+    'db' => array(
+        'driver'         => 'Pdo_Sqlite',
+        'dsn'            => 'sqlite:data/reminders.sqlite',
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
     'zf-rpc' => [
         'CollectionDays' => [
             'http_methods' => ['GET'],
