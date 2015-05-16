@@ -49,7 +49,7 @@ class PhxGovCollectionDays implements CollectionDaysInterface
         $body = $response->getBody()->getContents();
         $json = json_decode($body, true);
         if(!isset($json['pw_collections'])){
-            return new ApiProblem(200, 'Sorry that address is not serviced by Phoenix waste collection');
+            return new ApiProblem(400, 'Sorry that address is not serviced by Phoenix waste collection');
         }
 
         $days = [];
