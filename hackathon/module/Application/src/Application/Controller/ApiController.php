@@ -40,7 +40,7 @@ class ApiController extends AbstractActionController
         $address = $this->getRequest()->getQuery('address',null);
         if(!$address) {
             // todo handle with content validation
-            return new ApiProblem(400, 'Address must be provided');
+            return new ApiProblemResponse(ApiProblem(400, 'Address must be provided'));
         }
 
         $days = $this->getCollectionDaysService()->getCollectionDays($address);
