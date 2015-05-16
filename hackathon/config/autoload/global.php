@@ -16,16 +16,10 @@ use Zend\View\Model\JsonModel;
 
 return array(
     'zf-rpc' => [
-        'Api' => [
-            'http_methods' => ['GET'],
-            'callable' => function($e) {
-                return new JsonModel(['hello' => 'world']);
-            }
-        ],
         'CollectionDays' => [
             'http_methods' => ['GET'],
             'route-name' => 'collection-days',
-            'callable' => ApiController::class . '::collectionDaysAction'
+            //'callable' => ApiController::class . '::collectionDaysAction'
         ],
         'RemindMe' => [
             'http_methods' => ['GET'],
