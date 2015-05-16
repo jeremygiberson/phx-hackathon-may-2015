@@ -31,6 +31,11 @@ return array(
             'http_methods' => ['GET'],
             'route-name' => 'remind-me',
             'callable' => ApiController::class . '::remindMeAction'
+        ],
+        'RefuseBot' => [
+            'http_methods' => ['GET'],
+            'route-name' => 'refuse-bot',
+            'callable' => ApiController::class . '::refuseBotAction'
         ]
     ]
 );

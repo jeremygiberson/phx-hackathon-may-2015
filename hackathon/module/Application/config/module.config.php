@@ -23,19 +23,6 @@ return array(
                     ),
                 ),
             ),
-            'api' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/api',
-                    'defaults' => array(
-                        'controller' => 'Api',
-                    ),
-                ),
-            ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
             'collection-days' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -51,6 +38,15 @@ return array(
                     'route'    => '/remind-me',
                     'defaults' => array(
                         'controller' => 'RemindMe'
+                    ),
+                ),
+            ),
+            'refuse-bot' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/refuse-bot',
+                    'defaults' => array(
+                        'controller' => 'RefuseBot'
                     ),
                 ),
             ),

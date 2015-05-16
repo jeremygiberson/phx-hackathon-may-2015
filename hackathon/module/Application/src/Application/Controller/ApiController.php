@@ -31,4 +31,15 @@ class ApiController extends AbstractActionController
             ]
         ]);
     }
+
+    public function refuseBotAction()
+    {
+        return new JsonModel([
+            'responses' => [
+                ['noun' => 'milk carton', 'instructions' => 'clean and recycle'],
+                ['noun' => 'soup can', 'instructions' => 'clean and recycle'],
+                ['noun' => 'banana peel', 'instructions' => 'compost or throw in garbage']
+            ]
+        ]);
+    }
 }
