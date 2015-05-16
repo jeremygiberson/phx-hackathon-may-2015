@@ -3,3 +3,4 @@
 .vagrant/
 html/
 accounts.md
+vendor/
