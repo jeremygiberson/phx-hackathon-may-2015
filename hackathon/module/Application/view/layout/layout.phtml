@@ -3,17 +3,17 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->translate('RefuseBot'))->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
 
-        <!-- Le styles -->
+        <!-- Styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                        ->prependStylesheet('https://fezvrasta.github.io/bootstrap-material-design/dist/css/material-fullpalette.css')
                         ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
 
         <!-- Scripts -->
@@ -27,14 +27,14 @@
 
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <a class="h1 navbar-brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('RefuseBot') ?></a>
                 </div>
                 <div id="" class="navbar-right">
                     <p class="navbar-text text-small">
-                        City of Phoenix <a href="http://phxinnovationgames.com/">Innovation Games</a>
+                        <span class="navbar-right">City of Phoenix <a href="http://phxinnovationgames.com/">Innovation Games</a></span>
                         <br>
                         <span class="navbar-right"><?php echo date('M d Y') ?></span>
                     </p>
