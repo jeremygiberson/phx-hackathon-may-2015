@@ -28,6 +28,9 @@ use Application\Service\RefuseBot\QuestionParser\QuestionParserInterface;
 use Application\Service\RefuseBot\RefuseBotInterface;
 use Application\Service\RemindMe\Factory\DbAdapterRemindMeFactory;
 use Application\Service\RemindMe\RemindMeInterface;
+use Application\Service\TwitterRest\Factory\TwitterOAuthTwitterRestFactory;
+use Application\Service\TwitterRest\TwitterOauthTwitterRest;
+use Application\Service\TwitterRest\TwitterRestInterface;
 use Application\Service\TwitterStream\Factory\TwitterStreamFactory;
 use Application\Service\TwitterStream\Listener\Factory\MentionedInTweetListenerFactory;
 use Application\Service\TwitterStream\Listener\Factory\TwitterQueueListenerFactory;
@@ -111,6 +114,7 @@ return array(
             'twitter_queue' => new AmqpQueueFactory('twitter'),
             TwitterQueueListener::class => TwitterQueueListenerFactory::class,
             MentionedInTweetListener::class => MentionedInTweetListenerFactory::class,
+            TwitterRestInterface::class => TwitterOAuthTwitterRestFactory::class,
         ],
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
