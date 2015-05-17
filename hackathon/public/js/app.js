@@ -1,11 +1,11 @@
 (function(window, document, $) {
 
 	function errorHandler (jqXhr, textStatus, errorThrown) {
-		console.log(textStatus, errorThrown);
 
 		var response = jqXhr.responseJSON,
 			selector,
-			url;
+			url,
+			$input;
 
 		url = this.url.replace(/\?.*/, '');
 
@@ -14,21 +14,30 @@
 				selector = '#form-refusebot';
 				break;
 			case 'collection-days':
-				console.log('collection-days');
+				selector = '#form-pickup-days';
 				break;
 			case 'remind-me':
-				console.log('remind-me');
+				selector = '#form-email';
 				break;
 			default:
-				return false;
+				console.log(textStatus, errorThrown);
 		}
 
-		$(selector).append(['<div class="alert alert-danger alert-dismissible" role="alert">',
-								'<button type="button" class="close" data-dismiss="alert" aria-label="Close">',
-									'<span aria-hidden="true">&times;</span>',
-								'</button>',
-								'<p><strong>' + response.title + '</strong><br>' + response.detail + '</p>',
-							'</div>'].join(''));
+		$input = $('input', selector);
+
+		if ($input.length === 0) {
+			 $input = $('textarea', selector);
+		}
+
+		$input.val('');
+
+		$(selector)
+			.append(['<div class="alert alert-danger alert-dismissible" role="alert">',
+						'<button type="button" class="close" data-dismiss="alert" aria-label="Close">',
+							'<span aria-hidden="true">&times;</span>',
+						'</button>',
+						'<p><strong>' + response.title + '</strong><br>' + response.detail + '</p>',
+					'</div>'].join(''));
 
 
 	}
@@ -65,9 +74,7 @@
 
 				var row = [];
 
-				if (i == data.responses.length - 1) {
-					message.push(' Lastly, for a <strong>' + data.responses[i].noun + '</strong> you can ' + data.responses[i].instructions + '.');
-				} else if (i === 0) {
+				if (i === 0) {
 					message.push('For a <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
 					message.reverse();
 				} else {
