@@ -53,7 +53,9 @@
 	function refusebotSubmit (query) {
 
 		$.ajax('http://hackathon.local/refuse-bot', {
-			data: {},
+			data: {
+				'question':query
+			},
 			dataType: 'json',
 			error: errorHandler,
 			success: successHandler
