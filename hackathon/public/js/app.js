@@ -110,12 +110,61 @@
 
 	}
 
+	function emailSubmit (query) {
+
+		$.ajax('http://hackathon.local/remind-me', {
+			data: query,
+			success: successHandler
+		});
+
+		function successHandler (data, textStatus, jqXhr) {
+
+			hide('#form-email');
+			updateResultsDom(data);
+
+		}
+
+		function updateResultsDom (data) {
+
+			var _$message = $('#results-email-message'),
+				_$streetAddress = $('#results-email-street-address'),
+				_$emailAddress = $('#results-email-email-address'),
+				_$alerts = $('#results-email-alerts'),
+				rows = [];
+
+			_$message.html('<strong>Awesome!</strong> ' + data.message + ' They\'ll be sent to ' + data.email);
+			_$streetAddress.html(data.address);
+			_$emailAddress.html(data.email);
+
+			for (var i = data.reminders.length - 1; i >= 0; i--) {
+
+				rows.push([
+					'<tr>',
+						'<td>' + data.reminders[i].container.toTitleCase() + ': </td>',
+						'<td>' + data.reminders[i].day.toTitleCase() + '</td>',
+					'</tr>'
+				].join(''));
+
+			}
+
+			$('table', '#results-pickup-days').empty();
+			hide('#results-pickup-days');
+
+			$('#results-email-reminders').append(rows);
+
+			show('#results-email');
+
+		}
+	}
+
 	$(document).ready(function() {
 
 		var $formRefusebotSubmit = $('#form-refusebot-submit'),
 			$formRefusebotInput = $('#form-refusebot-query'),
 			$formPickupDaySubmit = $('#form-pickup-days-submit'),
-			$formPickupDayInput = $('#form-pickup-days-query');
+			$formPickupDayInput = $('#form-pickup-days-query'),
+			$formEmailSubmit = $('#form-email-submit'),
+			$formEmailInput = $('#form-email-input');
 
 		$formRefusebotSubmit.on('click', function (event) {
 			event.preventDefault();
@@ -138,6 +187,22 @@
 				alert('enter data, nerd.');
 			} else {
 				pickupDaysSubmit(query);
+			}
+
+		});
+
+		$formEmailSubmit.on('click', function (event) {
+			event.preventDefault();
+
+			var query = {
+				email: $formEmailInput.val(),
+				address: $formPickupDayInput.val(),
+			};
+
+			if (!query.email.length) {
+				alert('enter data, nerd.');
+			} else {
+				emailSubmit(query);
 			}
 
 		});
