@@ -12,7 +12,7 @@
 
         <!-- Styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath('css/style.css'))
+                        ->prependStylesheet($this->basePath('css/style.css?v=' . time() ))
                         ->prependStylesheet('https://fezvrasta.github.io/bootstrap-material-design/dist/css/material-fullpalette.css')
                         ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
 

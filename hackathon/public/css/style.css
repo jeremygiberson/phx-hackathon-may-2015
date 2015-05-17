@@ -83,6 +83,16 @@ a, a:hover, a:focus {
 #form-refusebot {}
 	#form-refusebot .form-group + button[type="submit"] {}
 
+#results-refusebot {
+	position: relative;
+	padding-top: 70px;
+}
+
+#refusebot-message {
+	position: absolute;
+	top: 0;
+}
+
 #results-email {
 	margin-top: 2em;
 }
@@ -97,6 +107,16 @@ a, a:hover, a:focus {
 	background-image: linear-gradient(#308c6d, #308c6d),
 					  linear-gradient(#d2d2d2, #d2d2d2);
 }
+
+.infographic-panel {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: top center;
+}
+	#infographic-panel-average-recycle {
+		background-image: url('../img/infographic/panel-average-recycle.png');
+		height: 1215px;
+	}
 
 @media (min-width: 768px) {
 	body {
