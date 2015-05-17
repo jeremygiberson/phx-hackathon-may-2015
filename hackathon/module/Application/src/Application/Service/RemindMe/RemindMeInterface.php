@@ -21,4 +21,10 @@ interface RemindMeInterface
      */
     public function unsubscribe($email, $address);
 
+    /**
+     * @param string $day
+     * @return Notification[]
+     */
+    public function notifications($day);
+
 }
