@@ -19,15 +19,21 @@ use Application\Service\CollectionDays\Listeners\GetCollectionDaysPreListener;
 use Application\Service\CollectionDays\PhxGovCollectionDays;
 use Application\Service\Notify\NotifyInterface;
 use Application\Service\Notify\PhpMailNotify;
+use Application\Service\Queue\Factory\AmqpQueueFactory;
 use Application\Service\RefuseBot\Classifier\ClassifierInterface;
 use Application\Service\RefuseBot\Classifier\HardCodedClassifier;
 use Application\Service\RefuseBot\Factory\SerialRefuseBotFactory;
 use Application\Service\RefuseBot\QuestionParser\HardCodedQuestionParser;
 use Application\Service\RefuseBot\QuestionParser\QuestionParserInterface;
 use Application\Service\RefuseBot\RefuseBotInterface;
-use Application\Service\RefuseBot\SerialRefuseBot;
 use Application\Service\RemindMe\Factory\DbAdapterRemindMeFactory;
 use Application\Service\RemindMe\RemindMeInterface;
+use Application\Service\TwitterStream\Factory\TwitterStreamFactory;
+use Application\Service\TwitterStream\Listener\Factory\MentionedInTweetListenerFactory;
+use Application\Service\TwitterStream\Listener\Factory\TwitterQueueListenerFactory;
+use Application\Service\TwitterStream\Listener\MentionedInTweetListener;
+use Application\Service\TwitterStream\Listener\TwitterQueueListener;
+use Application\Service\TwitterStream\TwitterStream;
 use Zend\Cache\Service\StorageCacheAbstractServiceFactory;
 use Zend\Mvc\Service\EventManagerFactory;
 
@@ -99,7 +105,12 @@ return array(
             GetCollectionDaysPreListener::class => GetCollectionDaysPreListenerFactory::class,
             GetCollectionDaysPostListener::class => GetCollectionDaysPostListenerFactory::class,
             'ApiEventManager' => EventManagerFactory::class,
+            'TwitterEventManager' => EventManagerFactory::class,
             RefuseBotInterface::class => SerialRefuseBotFactory::class,
+            TwitterStream::class => TwitterStreamFactory::class,
+            'twitter_queue' => new AmqpQueueFactory('twitter'),
+            TwitterQueueListener::class => TwitterQueueListenerFactory::class,
+            MentionedInTweetListener::class => MentionedInTweetListenerFactory::class,
         ],
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -165,6 +176,24 @@ return array(
                             'action' => 'sendNotifications'
                         ]
                     ]
+                ],
+                'twitter-stream' => [
+                    'options' => [
+                        'route' => 'twitter stream',
+                        'defaults' => [
+                            'controller' => ApiController::class,
+                            'action' => 'twitterStream'
+                        ]
+                    ]
+                ],
+                'twitter-handler' => [
+                    'options' => [
+                        'route' => 'twitter handler',
+                        'defaults' => [
+                            'controller' => ApiController::class,
+                            'action' => 'twitterHandler'
+                        ]
+                    ]
                 ]
             ),
         ),
@@ -180,5 +209,19 @@ return array(
                 'exception_handler' => ['throw_exceptions' => false],
             ],
         ]
+    ],
+
+    'twitter' => [
+        'consumer_key' => 'NJIVdQuLB7estIkqD4TiLqaAi',
+        'consumer_secret' => 'xxxxxxx',
+        'oauth_token' => '3196971872-k8eipwXa9WMZ1aVORzOCMDt3PmvdpOaWjOWvXGd',
+        'oauth_secret' => 'xxxxxxx'
+    ],
+
+    'amqp' => [
+        'host' => 'localhost',
+        'port' => 5672,
+        'user' => 'hackathon',
+        'password' => 'phx'
     ]
 );

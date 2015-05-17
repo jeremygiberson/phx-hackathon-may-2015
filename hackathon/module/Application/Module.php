@@ -12,6 +12,8 @@ namespace Application;
 use Application\Service\CollectionDays\Delegator\CollectionDaysEventDelegator;
 use Application\Service\CollectionDays\Listeners\GetCollectionDaysPostListener;
 use Application\Service\CollectionDays\Listeners\GetCollectionDaysPreListener;
+use Application\Service\TwitterStream\Listener\MentionedInTweetListener;
+use Zend\EventManager\EventManager;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -24,12 +26,18 @@ class Module
         $moduleRouteListener->attach($eventManager);
 
         $locator = $e->getApplication()->getServiceManager();
-        $em = $locator->get('ApiEventManager');
+        $ApiEventManager = $locator->get('ApiEventManager');
         $pre_listener = $locator->get(GetCollectionDaysPreListener::class);
         $post_listener = $locator->get(GetcollectionDaysPostListener::class);
 
-        $em->attach(CollectionDaysEventDelegator::EVENT_PRE, $pre_listener);
-        $em->attach(CollectionDaysEventDelegator::EVENT_POST, $post_listener);
+        $ApiEventManager->attach(CollectionDaysEventDelegator::EVENT_PRE, $pre_listener);
+        $ApiEventManager->attach(CollectionDaysEventDelegator::EVENT_POST, $post_listener);
+
+        /** @var EventManager $twitterEventManager */
+        $twitterEventManager = $locator->get('TwitterEventManager');
+        $mentionedListener = $locator->get(MentionedInTweetListener::class);
+        $twitterEventManager->attach('twitter.event', $mentionedListener);
+
     }
 
     public function getConfig()
