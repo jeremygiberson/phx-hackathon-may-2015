@@ -2,6 +2,35 @@
 
 	function errorHandler (jqXhr, textStatus, errorThrown) {
 		console.log(textStatus, errorThrown);
+
+		var response = jqXhr.responseJSON,
+			selector,
+			url;
+
+		url = this.url.replace(/\?.*/, '');
+
+		switch (url.substring(23)) {
+			case 'refuse-bot':
+				selector = '#form-refusebot';
+				break;
+			case 'collection-days':
+				console.log('collection-days');
+				break;
+			case 'remind-me':
+				console.log('remind-me');
+				break;
+			default:
+				return false;
+		}
+
+		$(selector).append(['<div class="alert alert-danger alert-dismissible" role="alert">',
+								'<button type="button" class="close" data-dismiss="alert" aria-label="Close">',
+									'<span aria-hidden="true">&times;</span>',
+								'</button>',
+								'<p><strong>' + response.title + '</strong><br>' + response.detail + '</p>',
+							'</div>'].join(''));
+
+
 	}
 
 	if (!String.prototype.toTitleCase) {
