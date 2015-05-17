@@ -37,12 +37,12 @@
 				var row = [];
 
 				if (i == data.responses.length - 1) {
-					message.push(' Lastly, for ' + data.responses[i].noun + ' you can ' + data.responses[i].instructions + '.');
+					message.push(' Lastly, for <strong>' + data.responses[i].noun + '</strong> you can ' + data.responses[i].instructions + '.');
 				} else if (i === 0) {
-					message.push('For ' + data.responses[i].noun + ', you can ' + data.responses[i].instructions + '.');
+					message.push('For <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
 					message.reverse();
 				} else {
-					message.push(' For ' + data.responses[i].noun + ', you can ' + data.responses[i].instructions + '.');
+					message.push(' For <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
 				}
 
 			}
