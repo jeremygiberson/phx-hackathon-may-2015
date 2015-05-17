@@ -32,6 +32,9 @@ Ask Refuse Bot how you're suppose to dispose of something and it will tell you h
   * process text via bot service
   * response tweet result
   
+  `$ php public/index.php twitter stream`
+  `$ php public/index.php twitter handler`
+  
   
 ## Reclaimable Notice (idea)
 Notify US about a reclaimable you have for pickup -- and we'll come get it.

@@ -6,8 +6,11 @@ namespace Application\Controller;
 
 use Application\Service\CollectionDays\CollectionDaysInterface;
 use Application\Service\Notify\NotifyInterface;
+use Application\Service\Queue\QueueInterface;
 use Application\Service\RefuseBot\RefuseBotInterface;
 use Application\Service\RemindMe\RemindMeInterface;
+use Application\Service\TwitterStream\Listener\TwitterQueueListener;
+use Application\Service\TwitterStream\TwitterStream;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use ZF\ApiProblem\ApiProblem;
@@ -26,6 +29,49 @@ class ApiController extends AbstractActionController
 
     /** @var  RefuseBotInterface */
     protected $refuseBot;
+
+    /** @var  TwitterStream */
+    protected $twitterStream;
+
+    /** @var  QueueInterface */
+    protected $queue;
+
+    /**
+     * @return QueueInterface
+     */
+    public function getQueue()
+    {
+        return $this->queue;
+    }
+
+    /**
+     * @param QueueInterface $queue
+     * @return self
+     */
+    public function setQueue($queue)
+    {
+        $this->queue = $queue;
+        return $this;
+    }
+
+
+    /**
+     * @return TwitterStream
+     */
+    public function getTwitterStream()
+    {
+        return $this->twitterStream;
+    }
+
+    /**
+     * @param TwitterStream $twitterStream
+     * @return self
+     */
+    public function setTwitterStream($twitterStream)
+    {
+        $this->twitterStream = $twitterStream;
+        return $this;
+    }
 
     /**
      * @return RefuseBotInterface
@@ -246,4 +292,17 @@ To unsubscribe please visit this link: <a href='http://hackathon.local/unsubscri
     }
 
 
+    public function twitterStreamAction()
+    {
+        set_time_limit(0);
+        $this->getTwitterStream()->consume();
+    }
+
+    public function twitterHandlerAction()
+    {
+        /** @var TwitterQueueListener $listener */
+        $listener = $this->getServiceLocator()->get(TwitterQueueListener::class);
+
+        $this->getQueue()->consume($listener);
+    }
 }

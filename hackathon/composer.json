@@ -12,6 +12,8 @@
         "zendframework/zendframework": "~2.4",
         "zfcampus/zf-rpc": "~1.0-dev",
         "guzzlehttp/guzzle": "5.0.*@dev",
-        "vgarvardt/zf-simple-migrations": "dev-master"
+        "vgarvardt/zf-simple-migrations": "dev-master",
+        "fennb/phirehose": "dev-master",
+        "videlalvaro/php-amqplib": "2.2.*"
     }
 }
