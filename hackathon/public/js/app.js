@@ -150,12 +150,6 @@
 
 	}
 
-	function fadeInChildImage (selector) {
-		setTimeout(function() {
-			$('img', selector).fadeIn('slow');
-		}, 650);
-	}
-
 	function emailSubmit (query) {
 
 		$.ajax('http://hackathon.local/remind-me', {
@@ -204,6 +198,10 @@
 	}
 
 	$(document).ready(function() {
+
+		setTimeout(function() {
+			$('#infographic').slideDown('slow');
+		}, 550);
 
 		var $formRefusebotSubmit = $('#form-refusebot-submit'),
 			$formRefusebotInput = $('#form-refusebot-query'),
@@ -255,27 +253,6 @@
 			}
 
 		});
-
-		// waypointFiveRs = new Waypoint({
-		// 	element: document.getElementById('infographic-panel-5-rs'),
-		// 	handler: function() {
-		// 		fadeInChildImage('#infographic-panel-5-rs');
-		// 	}
-		// });
-
-		// waypointAvgRecycle = new Waypoint({
-		// 	element: document.getElementById('infographic-panel-average-recycle'),
-		// 	handler: function() {
-		// 		fadeInChildImage('#infographic-panel-average-recycle');
-		// 	}
-		// });
-
-		// waypointAvgTrash = new Waypoint({
-		// 	element: document.getElementById('infographic-panel-average-trash'),
-		// 	handler: function() {
-		// 		fadeInChildImage('#infographic-panel-average-trash');
-		// 	}
-		// });
 
 	});
 
