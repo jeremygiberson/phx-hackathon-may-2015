@@ -156,10 +156,11 @@ class ApiController extends AbstractActionController
             return new ApiProblemResponse(new ApiProblem(400, 'Address must be provided'));
         }
 
-        $days = $this->getCollectionDaysService()->getCollectionDays($address);
-        if($days instanceof ApiProblem)
+        try {
+            $days = $this->getCollectionDaysService()->getCollectionDays($address);
+        } catch (\Exception $e)
         {
-            return new ApiProblemResponse($days);
+            return new ApiProblemResponse(new ApiProblem(403, $e->getMessage()));
         }
 
         $response = [];

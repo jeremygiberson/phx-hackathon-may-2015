@@ -193,6 +193,7 @@ php:
             - mcrypt
             - memcached
             - memcache
+            - curl
         pear: {  }
         pecl:
             - pecl_http
