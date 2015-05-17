@@ -5,6 +5,11 @@ body {
 	padding-bottom: 40px;
 }
 
+.navbar.navbar, .navbar-default.navbar {
+	background-color: #414657;
+	color: #f7fde8;
+}
+
 .navbar-brand {
 	font-family: 'Exo 2', sans-serif;
 }
@@ -17,6 +22,10 @@ body {
 	.navbar a {
 		color: #ff6977;
 	}
+
+a, a:hover, a:focus {
+	color: #167253;
+}
 
 #refusebot {
 	width: 325px;
@@ -75,7 +84,18 @@ body {
 	#form-refusebot .form-group + button[type="submit"] {}
 
 #results-email {
-	margin-top: 1em;
+	margin-top: 2em;
+}
+
+.btn-success:not(.btn-link):not(.btn-flat) {
+	background-color: #167253;
+}
+	.btn-success:not(.btn-link):not(.btn-flat):hover {
+		background-color: #308c6d;
+	}
+.form-group .form-control:focus, .form-group-default .form-control:focus {
+	background-image: linear-gradient(#308c6d, #308c6d),
+					  linear-gradient(#d2d2d2, #d2d2d2);
 }
 
 @media (min-width: 768px) {
