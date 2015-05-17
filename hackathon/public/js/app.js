@@ -30,44 +30,22 @@
 
 		function updateResultsDom (data) {
 			var _$results = $('#refusebot-message'),
-				mentioned = [],
-				rows = [],
-				message;
+				message = [];
 
 			for (var i = data.responses.length - 1; i >= 0; i--) {
 
 				var row = [];
 
 				if (i == data.responses.length - 1) {
-					mentioned.push(' and ' + data.responses[i].noun);
-				} else if (i == 0) {
-					mentioned.push(data.responses[i].noun);
-					mentioned.reverse();
+					message.push(' Lastly, for <strong>' + data.responses[i].noun + '</strong> you can ' + data.responses[i].instructions + '.');
+				} else if (i === 0) {
+					message.push('For <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
+					message.reverse();
 				} else {
-					mentioned.push(' ' + data.responses[i].noun);
+					message.push(' For <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
 				}
 
-				row = [
-					'<tr>',
-						'<td>',
-							data.responses[i].noun,
-						'</td>',
-						'<td>',
-							data.responses[i].instructions,
-						'</td>',
-					'</tr>'
-				].join('');
-
-				rows.push(row);
-
 			}
-
-			i = null;
-
-			message = [
-				'<p>You asked about ' + mentioned.toString() + '.</p>',
-				'<table>' + rows.join('') + '</table>'
-			].join('');
 
 			_$results.html(message);
 
