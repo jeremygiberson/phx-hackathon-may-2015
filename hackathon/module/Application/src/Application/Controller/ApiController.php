@@ -6,6 +6,7 @@ namespace Application\Controller;
 
 use Application\Service\CollectionDays\CollectionDaysInterface;
 use Application\Service\Notify\NotifyInterface;
+use Application\Service\RefuseBot\RefuseBotInterface;
 use Application\Service\RemindMe\RemindMeInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -22,6 +23,27 @@ class ApiController extends AbstractActionController
 
     /** @var  NotifyInterface */
     protected $notifyService;
+
+    /** @var  RefuseBotInterface */
+    protected $refuseBot;
+
+    /**
+     * @return RefuseBotInterface
+     */
+    public function getRefuseBot()
+    {
+        return $this->refuseBot;
+    }
+
+    /**
+     * @param RefuseBotInterface $refuseBot
+     * @return self
+     */
+    public function setRefuseBot($refuseBot)
+    {
+        $this->refuseBot = $refuseBot;
+        return $this;
+    }
 
     /**
      * @return NotifyInterface
@@ -202,13 +224,25 @@ To unsubscribe please visit this link: <a href='http://hackathon.local/unsubscri
 
     public function refuseBotAction()
     {
-        return new JsonModel([
-            'responses' => [
-                ['noun' => 'milk carton', 'instructions' => 'clean and recycle'],
-                ['noun' => 'soup can', 'instructions' => 'clean and recycle'],
-                ['noun' => 'banana peel', 'instructions' => 'compost or throw in garbage']
-            ]
-        ]);
+        $question = $this->getRequest()->getQuery('question', null);
+
+        try {
+            $recommendations = $this->getRefuseBot()->recommend($question);
+        } catch (\Exception $e)
+        {
+            return new ApiProblemResponse(new ApiProblem(400, $e->getMessage()));
+        }
+
+        $response = ['responses' => []];
+        foreach($recommendations as $recommendation)
+        {
+            $response['responses'][] = [
+                'noun' => $recommendation->getNoun(),
+                'instructions' => $recommendation->getInstructions()
+            ];
+        }
+
+        return new JsonModel($response);
     }
 
 
