@@ -5,6 +5,9 @@ namespace Application\Service\RemindMe;
 
 
 use Application\Service\CollectionDays\CollectionDay;
+use DateInterval;
+use DateTime;
+use DateTimeZone;
 use RuntimeException;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
@@ -56,7 +59,10 @@ class DbAdapterRemindMe implements RemindMeInterface, AdapterAwareInterface
      */
     public function unsubscribe($email, $address)
     {
+        $this->adapter->query('PRAGMA foreign_keys = ON');
+
         $subscription = new TableGateway('subscription', $this->adapter);
+
         $subscription->delete([
             'address' => $address,
             'email' => $email
@@ -72,5 +78,38 @@ class DbAdapterRemindMe implements RemindMeInterface, AdapterAwareInterface
     public function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
+    }
+
+    /**
+     * @param string $day
+     * @return Notification[]
+     */
+    public function notifications($day)
+    {
+        $tomorrow = (new DateTime($day, new DateTimeZone('UTC')))
+            ->add(new DateInterval('P1D'))
+            ->format('l');
+
+        $reminder = new TableGateway('reminder', $this->adapter);
+
+        $select = $reminder->getSql()->select();
+        $select->where([
+            'day' => strtoupper($tomorrow)
+        ]);
+        $select->join('subscription',
+            'reminder.subscription_id = subscription.subscription_id',
+            ['email', 'address']);
+
+        $results = $reminder->selectWith($select);
+
+        $notifications = [];
+
+        foreach($results as $r)
+        {
+            $notifications[] = new Notification($r['email'],
+                $r['address'], $r['service'], $r['day']);
+        }
+
+        return $notifications;
     }
 }

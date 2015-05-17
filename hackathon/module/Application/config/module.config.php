@@ -17,6 +17,8 @@ use Application\Service\CollectionDays\Listeners\Factory\GetCollectionDaysPreLis
 use Application\Service\CollectionDays\Listeners\GetCollectionDaysPostListener;
 use Application\Service\CollectionDays\Listeners\GetCollectionDaysPreListener;
 use Application\Service\CollectionDays\PhxGovCollectionDays;
+use Application\Service\Notify\NotifyInterface;
+use Application\Service\Notify\PhpMailNotify;
 use Application\Service\RemindMe\Factory\DbAdapterRemindMeFactory;
 use Application\Service\RemindMe\RemindMeInterface;
 use Zend\Cache\Service\StorageCacheAbstractServiceFactory;
@@ -80,6 +82,7 @@ return array(
         'invokables' => [
             CollectionDaysInterface::class => PhxGovCollectionDays::class,
             CollectionDaysEventDelegatorFactory::class => CollectionDaysEventDelegatorFactory::class,
+            NotifyInterface::class => PhpMailNotify::class
         ],
         'factories' => [
             RemindMeInterface::class => DbAdapterRemindMeFactory::class,
@@ -114,7 +117,6 @@ return array(
     'controllers' => array(
         'invokables' => array(
             IndexController::class => IndexController::class,
-            ApiController::class => ApiController::class
         ),
         'factories' => array(
             ApiController::class => ApiControllerFactory::class,
@@ -143,6 +145,15 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+                'send-reminders' => [
+                    'options' => [
+                        'route' => 'notify <day>',
+                        'defaults' => [
+                            'controller' => ApiController::class,
+                            'action' => 'sendNotifications'
+                        ]
+                    ]
+                ]
             ),
         ),
     ),

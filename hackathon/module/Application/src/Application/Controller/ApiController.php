@@ -5,6 +5,7 @@ namespace Application\Controller;
 
 
 use Application\Service\CollectionDays\CollectionDaysInterface;
+use Application\Service\Notify\NotifyInterface;
 use Application\Service\RemindMe\RemindMeInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -18,6 +19,29 @@ class ApiController extends AbstractActionController
 
     /** @var  RemindMeInterface */
     protected $remindMeService;
+
+    /** @var  NotifyInterface */
+    protected $notifyService;
+
+    /**
+     * @return NotifyInterface
+     */
+    public function getNotifyService()
+    {
+        return $this->notifyService;
+    }
+
+    /**
+     * @param NotifyInterface $notifyService
+     * @return self
+     */
+    public function setNotifyService($notifyService)
+    {
+        $this->notifyService = $notifyService;
+        return $this;
+    }
+
+
 
     /**
      * @return RemindMeInterface
@@ -152,6 +176,30 @@ class ApiController extends AbstractActionController
         return new JsonModel($response);
     }
 
+    public function sendNotificationsAction()
+    {
+        $day = $this->getRequest()->getParam('day', 'MONDAY');
+
+        $notifications = $this->getRemindMeService()->notifications($day);
+        $count = 0;
+        foreach($notifications as $notification)
+        {
+            $count++;
+            $subject = sprintf("%s reminder", $notification->getService());
+            $message = sprintf("You need to take out your %s container so it can be emptied %s.
+
+To unsubscribe please visit this link: <a href='http://hackathon.local/unsubscribe-remind-me?address=%s&email=%s'>http://hackathon.local/unsubscribe-remind-me?address=%s&email=%s</a>\n",
+                $notification->getService(), $notification->getDay(),
+                urlencode($notification->getAddress()), $notification->getEmail(),
+                urlencode($notification->getAddress()), $notification->getEmail());
+
+            $this->getNotifyService()->notify($notification->getAddress(),
+                $subject, $message);
+        }
+
+        echo sprintf("Sent %s notifications", $count);
+    }
+
     public function refuseBotAction()
     {
         return new JsonModel([
@@ -162,4 +210,6 @@ class ApiController extends AbstractActionController
             ]
         ]);
     }
+
+
 }

@@ -1,0 +1,1 @@
+echo "apc.enable_cli = 1" >> /etc/php5/cli/conf.d/20-apcu.ini
