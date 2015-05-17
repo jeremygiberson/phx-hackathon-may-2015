@@ -25,7 +25,7 @@
 
 			hide('#form-refusebot');
 			updateResultsDom(data);
-			show('#results-pickup-days');
+
 		}
 
 		function updateResultsDom (data) {
@@ -37,18 +37,19 @@
 				var row = [];
 
 				if (i == data.responses.length - 1) {
-					message.push(' Lastly, for <strong>' + data.responses[i].noun + '</strong> you can ' + data.responses[i].instructions + '.');
+					message.push(' Lastly, for a <strong>' + data.responses[i].noun + '</strong> you can ' + data.responses[i].instructions + '.');
 				} else if (i === 0) {
-					message.push('For <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
+					message.push('For a <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
 					message.reverse();
 				} else {
-					message.push(' For <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
+					message.push(' For a <strong>' + data.responses[i].noun + '</strong>, you can ' + data.responses[i].instructions + '.');
 				}
 
 			}
 
 			_$results.html(message);
 
+			$('#refusebot').addClass('open');
 			show(_$results);
 		}
 
@@ -118,13 +119,27 @@
 
 		$formRefusebotSubmit.on('click', function (event) {
 			event.preventDefault();
-			refusebotSubmit($formRefusebotInput.val());
+			var query = $formRefusebotInput.val();
+
+			if (!query.length) {
+				alert('enter data, nerd.');
+			} else {
+				refusebotSubmit(query);
+			}
+
 		});
 
 		$formPickupDaySubmit.on('click', function (event) {
 			event.preventDefault();
 
-			pickupDaysSubmit($formPickupDayInput.val());
+			var query = $formPickupDayInput.val();
+
+			if (!query.length) {
+				alert('enter data, nerd.');
+			} else {
+				pickupDaysSubmit(query);
+			}
+
 		});
 
 	});
