@@ -45,6 +45,8 @@ class TwitterQueueListener
     {
         $status = json_decode($message->body, true);
 
+        echo sprintf("firing event %s: %s", 'twitter.event', $message->body);
+
         $event = new Event('twitter.event', $this, $status);
 
         $this->getEventManager()->trigger($event);
