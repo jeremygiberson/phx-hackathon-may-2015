@@ -4,8 +4,13 @@ body {
 }
 
 .text-small {
-	font-size: 1rem;
+	font-size: 1.2rem;
 }
+
+.navbar {}
+	.navbar a {
+		color: #ff6977;
+	}
 
 #refusebot {
 	width: 325px;
@@ -72,20 +77,22 @@ body {
 		padding-top: 60px;
 	}
 
+	#form-pickup-days {}
+		#form-pickup-days-query {
+			width: 28rem;
+		}
+
 	#form-refusebot {}
 		#form-refusebot .form-group {
 			min-width: 33rem;
 		}
 
 	#form-refusebot {}
-		#form-refusebot .form-group + button[type="submit"] {
-/*			position: absolute;
-			bottom: 0;
-			right: 0;*/
-		}
+		#form-refusebot .form-group + button[type="submit"] {}
 }
 
 @media (min-width: 992px) {
+
 	#form-refusebot {}
 		#form-refusebot .form-control {
 			width: 88%;
