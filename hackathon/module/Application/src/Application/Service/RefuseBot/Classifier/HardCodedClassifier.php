@@ -9,7 +9,8 @@ class HardCodedClassifier implements ClassifierInterface
     protected $classifications = [
         'milk carton' => 'recycle',
         'soup can' => 'recycle',
-        'banana peel' => 'compost'
+        'banana peel' => 'compost',
+        'cereal box' => 'recycle'
     ];
 
     protected $instructions = [

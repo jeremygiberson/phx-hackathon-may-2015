@@ -9,7 +9,8 @@ class HardCodedQuestionParser implements QuestionParserInterface
     protected $nouns = [
         'milk carton',
         'soup can',
-        'banana peel'
+        'banana peel',
+        'cereal box'
     ];
 
     /**

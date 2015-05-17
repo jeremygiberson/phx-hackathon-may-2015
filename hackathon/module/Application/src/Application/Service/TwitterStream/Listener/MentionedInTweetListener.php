@@ -76,10 +76,17 @@ class MentionedInTweetListener
         $status_user = $event->getParam('user', ['screen_name' => null]);
         $status_screen_name = $status_user['screen_name'];
 
+        // ignore our own messages, dumbass
+        if($status_screen_name == 'refusebot')
+        {
+            return;
+        }
+
         try {
             $recommendations = $this->getRefuseBotService()->recommend($text);
         } catch (\Exception $e)
         {
+            echo sprintf("couldn't understand %s", $text);
             $this->getTwitterRestService()->reply(
                 $status_id,
                 $status_screen_name,
@@ -87,15 +94,21 @@ class MentionedInTweetListener
             return;
         }
 
+        echo sprintf("Found %s recommendations for: %s\n", count($recommendations), $text);
 
         foreach($recommendations as $recommendation)
         {
-            $this->getTwitterRestService()->reply(
+            echo sprintf("tweeting recommendation %s: %s\n", $recommendation->getNoun(), $recommendation->getInstructions());
+
+            sleep(rand(10,30));
+            $status = $this->getTwitterRestService()->reply(
                 $status_id,
                 $status_screen_name,
-                sprintf("To dispose of %s, please %s",
+                sprintf("To dispose of %s, please %s. %s",
                     $recommendation->getNoun(),
-                    $recommendation->getInstructions()));
+                    $recommendation->getInstructions(),
+                    uniqid()));
+            var_dump($status);
         }
     }
 }
