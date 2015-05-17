@@ -23,15 +23,55 @@
 
 		function successHandler (data, textStatus, jqXhr) {
 
-			hide('#form-pickup-days');
+			hide('#form-refusebot');
 			updateResultsDom(data);
 			show('#results-pickup-days');
 		}
 
 		function updateResultsDom (data) {
-			var _$results = $('#refusebot-message');
+			var _$results = $('#refusebot-message'),
+				mentioned = [],
+				rows = [],
+				message;
 
-			_$results
+			for (var i = data.responses.length - 1; i >= 0; i--) {
+
+				var row = [];
+
+				if (i == data.responses.length - 1) {
+					mentioned.push(' and ' + data.responses[i].noun);
+				} else if (i == 0) {
+					mentioned.push(data.responses[i].noun);
+					mentioned.reverse();
+				} else {
+					mentioned.push(' ' + data.responses[i].noun);
+				}
+
+				row = [
+					'<tr>',
+						'<td>',
+							data.responses[i].noun,
+						'</td>',
+						'<td>',
+							data.responses[i].instructions,
+						'</td>',
+					'</tr>'
+				].join('');
+
+				rows.push(row);
+
+			}
+
+			i = null;
+
+			message = [
+				'<p>You asked about ' + mentioned.toString() + '.</p>',
+				'<table>' + rows.join('') + '</table>'
+			].join('');
+
+			_$results.html(message);
+
+			show(_$results);
 		}
 
 	}
@@ -100,15 +140,13 @@
 
 		$formRefusebotSubmit.on('click', function (event) {
 			event.preventDefault();
-			refusebotSubmit();
+			refusebotSubmit($formRefusebotInput.val());
 		});
 
 		$formPickupDaySubmit.on('click', function (event) {
 			event.preventDefault();
 
-			var query = $formPickupDayInput.val();
-
-			pickupDaysSubmit(query);
+			pickupDaysSubmit($formPickupDayInput.val());
 		});
 
 	});
