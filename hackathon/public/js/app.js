@@ -63,7 +63,7 @@
 
 		function successHandler (data, textStatus, jqXhr) {
 
-			hide('#form-refusebot');
+			// hide('#form-refusebot');
 			updateResultsDom(data);
 
 		}
@@ -71,6 +71,8 @@
 		function updateResultsDom (data) {
 			var _$results = $('#refusebot-message'),
 				message = [];
+
+			$('#form-refusebot').val('');
 
 			for (var i = data.responses.length - 1; i >= 0; i--) {
 
