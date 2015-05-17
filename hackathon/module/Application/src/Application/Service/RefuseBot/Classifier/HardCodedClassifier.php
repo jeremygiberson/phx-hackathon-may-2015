@@ -10,14 +10,17 @@ class HardCodedClassifier implements ClassifierInterface
         'milk carton' => 'recycle',
         'soup can' => 'recycle',
         'banana peel' => 'compost',
-        'cereal box' => 'recycle'
+        'cereal box' => 'recycle',
+        'car battery' => 'automotive',
+        'magazine' => 'recycle'
     ];
 
     protected $instructions = [
         'recycle' => 'clean and recycle',
         'compost' => 'compost or throw in the garbage',
         'garbage' => 'throw in the garbage',
-        'unknown' => 'please ask me again later'
+        'unknown' => 'please ask me again later',
+        'automotive' => 'Many automotive retailers will take back batteries. Or contact your local municipality for more information.'
     ];
 
     /**

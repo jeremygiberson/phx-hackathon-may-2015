@@ -10,7 +10,9 @@ class HardCodedQuestionParser implements QuestionParserInterface
         'milk carton',
         'soup can',
         'banana peel',
-        'cereal box'
+        'cereal box',
+        'car battery',
+        'magazine'
     ];
 
     /**
@@ -22,7 +24,7 @@ class HardCodedQuestionParser implements QuestionParserInterface
         $found_nouns = [];
         foreach($this->nouns as $noun)
         {
-            $pattern = sprintf("/(\\s|^)(%s)(\\s|$)/", $noun);
+            $pattern = sprintf("/(\\s|^)(%s)/", $noun);
             if(preg_match($pattern, $question)){
                 $found_nouns[] = $noun;
             }

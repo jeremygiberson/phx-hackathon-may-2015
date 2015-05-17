@@ -100,7 +100,7 @@ class MentionedInTweetListener
         {
             echo sprintf("tweeting recommendation %s: %s\n", $recommendation->getNoun(), $recommendation->getInstructions());
 
-            sleep(rand(10,30));
+            sleep(rand(2,10));
             $status = $this->getTwitterRestService()->reply(
                 $status_id,
                 $status_screen_name,
