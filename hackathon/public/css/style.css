@@ -1,6 +1,12 @@
+@import url(http://fonts.googleapis.com/css?Exo+2:400,400italic,500,500italic,700,800,900);
+
 body {
 	padding-top: 110px !important;
 	padding-bottom: 40px;
+}
+
+.navbar-brand {
+	font-family: 'Exo 2', sans-serif;
 }
 
 .text-small {
