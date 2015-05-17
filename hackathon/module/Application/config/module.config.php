@@ -19,6 +19,13 @@ use Application\Service\CollectionDays\Listeners\GetCollectionDaysPreListener;
 use Application\Service\CollectionDays\PhxGovCollectionDays;
 use Application\Service\Notify\NotifyInterface;
 use Application\Service\Notify\PhpMailNotify;
+use Application\Service\RefuseBot\Classifier\ClassifierInterface;
+use Application\Service\RefuseBot\Classifier\HardCodedClassifier;
+use Application\Service\RefuseBot\Factory\SerialRefuseBotFactory;
+use Application\Service\RefuseBot\QuestionParser\HardCodedQuestionParser;
+use Application\Service\RefuseBot\QuestionParser\QuestionParserInterface;
+use Application\Service\RefuseBot\RefuseBotInterface;
+use Application\Service\RefuseBot\SerialRefuseBot;
 use Application\Service\RemindMe\Factory\DbAdapterRemindMeFactory;
 use Application\Service\RemindMe\RemindMeInterface;
 use Zend\Cache\Service\StorageCacheAbstractServiceFactory;
@@ -72,7 +79,8 @@ return array(
                 'options' => array(
                     'route'    => '/refuse-bot',
                     'defaults' => array(
-                        'controller' => 'RefuseBot'
+                        'controller' => 'RefuseBot',
+                        'action' => 'refuseBot'
                     ),
                 ),
             ),
@@ -82,13 +90,16 @@ return array(
         'invokables' => [
             CollectionDaysInterface::class => PhxGovCollectionDays::class,
             CollectionDaysEventDelegatorFactory::class => CollectionDaysEventDelegatorFactory::class,
-            NotifyInterface::class => PhpMailNotify::class
+            NotifyInterface::class => PhpMailNotify::class,
+            QuestionParserInterface::class => HardCodedQuestionParser::class,
+            ClassifierInterface::class => HardCodedClassifier::class
         ],
         'factories' => [
             RemindMeInterface::class => DbAdapterRemindMeFactory::class,
             GetCollectionDaysPreListener::class => GetCollectionDaysPreListenerFactory::class,
             GetCollectionDaysPostListener::class => GetCollectionDaysPostListenerFactory::class,
             'ApiEventManager' => EventManagerFactory::class,
+            RefuseBotInterface::class => SerialRefuseBotFactory::class,
         ],
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -123,6 +134,7 @@ return array(
             'CollectionDays' => ApiControllerFactory::class,
             'RemindMe' => ApiControllerFactory::class,
             'UnsubscribeRemindMe' => ApiControllerFactory::class,
+            'RefuseBot' => ApiControllerFactory::class
         ),
     ),
     'view_manager' => array(

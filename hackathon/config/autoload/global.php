@@ -11,7 +11,6 @@
  * file.
  */
 
-use Application\Controller\ApiController;
 
 return array(
     'db' => array(
@@ -39,7 +38,6 @@ return array(
         'RefuseBot' => [
             'http_methods' => ['GET'],
             'route-name' => 'refuse-bot',
-            'callable' => ApiController::class . '::refuseBotAction'
         ]
     ],
 

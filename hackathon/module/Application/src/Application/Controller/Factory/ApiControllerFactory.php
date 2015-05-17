@@ -7,6 +7,7 @@ namespace Application\Controller\Factory;
 use Application\Controller\ApiController;
 use Application\Service\CollectionDays\CollectionDaysInterface;
 use Application\Service\Notify\NotifyInterface;
+use Application\Service\RefuseBot\RefuseBotInterface;
 use Application\Service\RemindMe\RemindMeInterface;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
@@ -36,10 +37,14 @@ class ApiControllerFactory implements FactoryInterface
         /** @var NotifyInterface $notifyService */
         $notifyService = $serviceLocator->get(NotifyInterface::class);
 
+        /** @var RefuseBotInterface $refuseBot */
+        $refuseBot = $serviceLocator->get(RefuseBotInterface::class);
+
         $controller = new ApiController();
         $controller->setCollectionDaysService($collectionDaysService);
         $controller->setRemindMeService($remindMeService);
         $controller->setNotifyService($notifyService);
+        $controller->setRefuseBot($refuseBot);
 
         return $controller;
     }
