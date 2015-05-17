@@ -63,6 +63,10 @@ body {
 #form-refusebot {}
 	#form-refusebot .form-group + button[type="submit"] {}
 
+#results-email {
+	margin-top: 1em;
+}
+
 @media (min-width: 768px) {
 	body {
 		padding-top: 60px;
