@@ -113,9 +113,9 @@ a, a:hover, a:focus {
 	background-repeat: no-repeat;
 	background-position: top center;
 }
-	#infographic-panel-average-recycle {
-		background-image: url('../img/infographic/panel-average-recycle.png');
-		height: 1215px;
+	.infographic-panel img {
+		width: 100%;
+		display: none;
 	}
 
 @media (min-width: 768px) {
