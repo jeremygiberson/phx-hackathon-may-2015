@@ -6,5 +6,5 @@ languages:
   Python: false
 exclude_paths:
  - "Vagrantfile"
- - "puphpet/"
- - "hackathon/public"
+ - "puphpet/*"
+ - "hackathon/public/*"
