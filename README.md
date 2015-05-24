@@ -1,4 +1,5 @@
 # Phoenix Innovation Games 2015
+[![Code Climate](https://codeclimate.com/github/jeremygiberson/phx-hackathon-may-2015/badges/gpa.svg)](https://codeclimate.com/github/jeremygiberson/phx-hackathon-may-2015)
 
 ## Reminder Service
 How often have you put something recyclable into the waste bin because the recycle bin was full?
